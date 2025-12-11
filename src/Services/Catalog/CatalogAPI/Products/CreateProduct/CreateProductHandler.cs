@@ -1,5 +1,6 @@
 ﻿
 using CatalogAPI.Products.LocalStorage;
+using FluentValidation;
 
 namespace CatalogAPI.Products.CreateProduct
 {
@@ -7,6 +8,17 @@ namespace CatalogAPI.Products.CreateProduct
     public record CreateProductCommand(string Name, List<string> Category, string Description, string ImageFile, decimal Price) : ICommand<CreateProductResult>;
 
         public record CreateProductResult(Guid Id);
+
+    public class CreateProductCommandValidator : AbstractValidator<CreateProductCommand>
+    {
+        public CreateProductCommandValidator()
+        {
+            RuleFor(x => x.Name).NotEmpty().WithMessage("Name is Required");
+            RuleFor(x => x.Category).NotEmpty().WithMessage("Catrgory can not be empty");
+            RuleFor(x => x.Description).NotEmpty().WithMessage("Descition is Required");
+            RuleFor(x => x.Price).GreaterThan(0).WithMessage("Price must be gretaer than 0");
+        }
+    }
     internal class CreateProductCommandHandler(IDocumentSession session)
         : ICommandHandler<CreateProductCommand, CreateProductResult>
     {
@@ -17,6 +29,8 @@ namespace CatalogAPI.Products.CreateProduct
             //save to database 
 
             //return CreateProductResult result
+
+
 
             var product = new Product
             {
