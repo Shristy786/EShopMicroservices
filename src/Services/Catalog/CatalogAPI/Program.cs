@@ -1,4 +1,11 @@
+using CatalogAPI.Products.GetProduct;
+
 var builder = WebApplication.CreateBuilder(args);
+
+//added for ILogger Error 
+//var serviceProvider = builder.Services.BuildServiceProvider();
+//var logger = serviceProvider.GetService<ILogger<GetProductQueryHanlder>>();
+//builder.Services.AddSingleton(typeof(ILogger), logger);
 
 
 //Add services to container
