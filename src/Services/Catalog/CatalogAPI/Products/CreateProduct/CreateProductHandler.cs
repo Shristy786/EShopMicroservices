@@ -1,4 +1,6 @@
 ﻿
+using CatalogAPI.Products.LocalStorage;
+
 namespace CatalogAPI.Products.CreateProduct
 {
 
@@ -18,6 +20,7 @@ namespace CatalogAPI.Products.CreateProduct
 
             var product = new Product
             {
+
                 Name = command.Name,
                 Category = command.Category,
                 Description = command.Description,
@@ -25,12 +28,16 @@ namespace CatalogAPI.Products.CreateProduct
                 Price = command.Price
             };
 
+            //commented these lines as docker desktop not working and PostgreSql not connected
 
-            session.Store(product);
-            await session.SaveChangesAsync(cancellationToken);
+            //session.Store(product);
+            //await session.SaveChangesAsync(cancellationToken);
+            //return new CreateProductResult(Guid.NewGuid());
 
-            return new CreateProductResult(Guid.NewGuid());
-            throw new NotImplementedException();
+            //added line for local storage and to verify minimal Api
+            LocalProductStore.Products.Add(product);
+            return new CreateProductResult(Guid.NewGuid()); 
+          
         }
     }
 }
