@@ -2,9 +2,11 @@
 using CatalogAPI.Models;
 using CatalogAPI.Products.LocalStorage;
 
+
 namespace CatalogAPI.Products.GetProduct
 {
-    public record GetProductsQuery() : IQuery<GetProductsResult>;
+
+    public record GetProductsQuery(int? PageNumber = 1, int? PageSize = 10) : IQuery<GetProductsResult>;
 
     public record GetProductsResult(IEnumerable<Product> Products);
     internal class GetProductQueryHanlder(IDocumentSession session)
@@ -12,10 +14,13 @@ namespace CatalogAPI.Products.GetProduct
     {
         public async Task<GetProductsResult> Handle(GetProductsQuery query, CancellationToken cancellationToken)
         {
-          
+
 
             //commented these lines as docker desktop not working and PostgreSql not connected
             //var products=await session.Query<Product>().ToListAsync(cancellationToken);
+
+            //For Pagination
+            var products = await session.Query<Product>().ToPagedListAsync(query.PageNumber?? 1,query.PageSize?? 10,cancellationToken);
 
             //added line for local storage and to verify minimal Api
             var products = LocalProductStore.Products;
