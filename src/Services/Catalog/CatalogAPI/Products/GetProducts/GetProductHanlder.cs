@@ -7,12 +7,12 @@ namespace CatalogAPI.Products.GetProduct
     public record GetProductsQuery() : IQuery<GetProductsResult>;
 
     public record GetProductsResult(IEnumerable<Product> Products);
-    internal class GetProductQueryHanlder(IDocumentSession session, ILogger<GetProductQueryHanlder> logger)
+    internal class GetProductQueryHanlder(IDocumentSession session)
         : IQueryHandler<GetProductsQuery, GetProductsResult>
     {
         public async Task<GetProductsResult> Handle(GetProductsQuery query, CancellationToken cancellationToken)
         {
-            logger.LogInformation("GetProductsQueryHandler.Handle called with {@Query}", query);
+          
 
             //commented these lines as docker desktop not working and PostgreSql not connected
             //var products=await session.Query<Product>().ToListAsync(cancellationToken);
